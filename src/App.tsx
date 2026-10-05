@@ -1,29 +1,62 @@
-function App() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-950 px-6 py-16 text-white">
-      <section className="w-full max-w-xl rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl shadow-black/20 sm:p-12">
-        <div className="mb-8 inline-flex size-14 items-center justify-center rounded-2xl bg-lime-300 text-xl font-black text-gray-950">
-          G
-        </div>
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-lime-300">
-          Admin dashboard
-        </p>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          Welcome to GymHood
-        </h1>
-        <p className="mt-5 text-lg leading-8 text-gray-300">
-          Your React app is ready. Start building your gym management experience
-          with Tailwind CSS.
-        </p>
-        <a
-          className="mt-8 inline-flex rounded-xl bg-lime-300 px-5 py-3 font-semibold text-gray-950 transition hover:bg-lime-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime-300"
-          href="https://react.dev"
-        >
-          Explore React
-        </a>
-      </section>
-    </main>
-  )
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import Login from './pages/Login/Login';
+import { useAuth } from './context/AuthContext';
+import AppLayout from './components/layout/AppLayout/AppLayout';
+import Dashboard from './pages/Dashboard/Dashboard';
+import Members from './pages/Members/Members';
+import Billing from './pages/Billing/Billing';
+import Reports from './pages/Reports/Reports';
+import Settings from './pages/Settings/Settings';
+
+/** Redirect authenticated users away from public routes. */
+function PublicRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <>{children}</>;
 }
 
-export default App
+/** Redirect unauthenticated users to login. */
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Toaster position="top-right" richColors closeButton />
+      <Routes>
+        {/* Public Login Route */}
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+
+        {/* Protected App Routes inside AppLayout */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="members" element={<Members />} />
+          <Route path="billing" element={<Billing />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+
+        {/* Default catch-all */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+

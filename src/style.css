@@ -2,7 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   ═══════════════════════════════════════════════════════════════ */
 :root {
+  /* Brand gradient */
+  --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #6d28d9 100%);
+  --gradient-hero: linear-gradient(135deg, #1e1b4b 0%, #3730a3 40%, #5b21b6 100%);
+
+  /* Surfaces */
+  --color-page-bg: #f8fafc;
+  --color-card-bg: #ffffff;
+
+  /* Theme Defaults (Base) */
+  --theme-from: #4f46e5;
+  --theme-to: #7c3aed;
+  --theme-light: rgba(79, 70, 229, 0.08);
+  --theme-border: rgba(79, 70, 229, 0.2);
+  --theme-glow: rgba(79, 70, 229, 0.35);
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --header-height: 60px;
+
+  /* Typography */
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -10,8 +33,196 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   THEMES
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="yellow"] {
+  --theme-from: #f59e0b;
+  --theme-to: #ea580c;
+  --theme-light: rgba(245, 158, 11, 0.08);
+  --theme-border: rgba(245, 158, 11, 0.2);
+  --theme-glow: rgba(245, 158, 11, 0.35);
+}
+[data-theme="green"] {
+  --theme-from: #10b981;
+  --theme-to: #059669;
+  --theme-light: rgba(16, 185, 129, 0.08);
+  --theme-border: rgba(16, 185, 129, 0.2);
+  --theme-glow: rgba(16, 185, 129, 0.35);
+}
+[data-theme="blue"] {
+  --theme-from: #3b82f6;
+  --theme-to: #2563eb;
+  --theme-light: rgba(59, 130, 246, 0.08);
+  --theme-border: rgba(59, 130, 246, 0.2);
+  --theme-glow: rgba(59, 130, 246, 0.35);
+}
+[data-theme="orange"] {
+  --theme-from: #f97316;
+  --theme-to: #ea580c;
+  --theme-light: rgba(249, 115, 22, 0.08);
+  --theme-border: rgba(249, 115, 22, 0.2);
+  --theme-glow: rgba(249, 115, 22, 0.35);
+}
+[data-theme="red"] {
+  --theme-from: #ef4444;
+  --theme-to: #dc2626;
+  --theme-light: rgba(239, 68, 68, 0.08);
+  --theme-border: rgba(239, 68, 68, 0.2);
+  --theme-glow: rgba(239, 68, 68, 0.35);
+}
+[data-theme="violet"] {
+  --theme-from: #a855f7;
+  --theme-to: #7e22ce;
+  --theme-light: rgba(168, 85, 247, 0.08);
+  --theme-border: rgba(168, 85, 247, 0.2);
+  --theme-glow: rgba(168, 85, 247, 0.35);
+}
+
+.bg-theme-gradient {
+  background-image: linear-gradient(135deg, var(--theme-from) 0%, var(--theme-to) 100%);
+  color: white;
+}
+.text-theme-gradient {
+  background-image: linear-gradient(135deg, var(--theme-from) 0%, var(--theme-to) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+.bg-theme-light { background-color: var(--theme-light); }
+.border-theme { border-color: var(--theme-border); }
+.text-theme { color: var(--theme-from); }
+.shadow-theme-glow { box-shadow: 0 4px 14px -2px var(--theme-glow); }
+
+/* Reference Image 2: Active sidebar gradient pill */
+.active-menu-gradient {
+  background: linear-gradient(135deg, var(--theme-from) 0%, var(--theme-to) 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 18px -2px var(--theme-glow) !important;
+}
+
+.theme-pill-gradient {
+  background: linear-gradient(135deg, var(--theme-from) 0%, var(--theme-to) 100%);
+  color: #ffffff;
+}
+
+/* Ambient layout gradients across the entire software */
+.bg-ambient-gradient {
+  background: 
+    radial-gradient(ellipse at 8% 5%, var(--theme-light) 0%, transparent 45%),
+    radial-gradient(ellipse at 92% 95%, var(--theme-light) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.7) 0%, transparent 60%),
+    linear-gradient(180deg, #f7f9fd 0%, #edf2f9 100%);
+}
+
+.sidebar-gradient-surface {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 45%, var(--theme-light) 100%);
+  border-right: 1px solid var(--theme-border);
+}
+
+.header-gradient-surface {
+  background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0.95) 45%, var(--theme-light) 100%);
+  border-bottom: 1px solid var(--theme-border);
+  backdrop-filter: blur(12px);
+}
+
+.footer-gradient-surface {
+  background: linear-gradient(90deg, rgba(255,255,255,0.6) 0%, var(--theme-light) 50%, rgba(255,255,255,0.6) 100%);
+  border-top: 1px solid var(--theme-border);
+  backdrop-filter: blur(8px);
+}
+
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  background-color: var(--color-page-bg);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGIN PAGE — LAYOUT
+   ═══════════════════════════════════════════════════════════════ */
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-page-bg);
+}
+
+/* ── Hero (left) ─────────────────────────────────────────────── */
+.login-hero {
+  position: relative;
+  display: none;
+  overflow: hidden;
+  flex: 1 1 60%;
+  background: var(--gradient-hero);
+}
+
+@media (min-width: 1024px) {
+  .login-hero {
+    display: flex;
+  }
+}
+
+/* ── Card wrapper (right) ────────────────────────────────────── */
+.login-card-wrapper {
+  display: flex;
+  flex: 1 1 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  background: var(--color-page-bg);
+}
+
+@media (min-width: 1024px) {
+  .login-card-wrapper {
+    flex: 0 0 480px;
+    max-width: 560px;
+    background: transparent;
+  }
+}
+
+/* ── Card ─────────────────────────────────────────────────────── */
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem 2.25rem;
+  border-radius: 1.5rem;
+  background: var(--color-card-bg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0,0,0,0.02);
+
+  animation: card-enter 0.5s ease-out both;
+}
+
+@media (min-width: 640px) {
+  .login-card {
+    padding: 3rem 2.5rem;
+  }
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-card {
+    animation: none;
+  }
+}
+
+/* Remove default autofill background color in webkit */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
